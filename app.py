@@ -15,6 +15,22 @@ doctor_collection = db['doctor']
 appointment_collection = db['appointment']
 CORS(app)
 
+'''
+接口名
+/wx_login 登录
+/wx_updateuser 更新用户信息
+/wx_addpet 添加宠物
+/wx_getpet 获取宠物信息
+/wx_updatepet 更新宠物信息
+/wx_deletepet 删除宠物
+/wx_doctor 获取医生信息
+/wx_doctors 获取全部医生信息
+/wx_appointment 预约挂号 
+/wx_cancel_appointment 取消预约 
+/wx_get_appointment 获取单个预约信息
+/wx_get_appointments 获取全部预约信息
+'''
+
 
 '''
 用户方法
@@ -198,9 +214,21 @@ def cancel_appointment():
     appointment_collection.delete_one({'orderid':orderid})
     return jsonify({'errmsg':"取消成功",'errcode':0}),200
 
-# 获取用户预约信息
-@app.route('/wx_get_appointments',methods = ['POST'])
+# 获取单个预约信息
+@app.route('/wx_get_appointment',methods = ['POST'])
 def get_appointment():
+    data = request.json
+    orderid = data.get('orderid')
+    appointment = appointment_collection.find_one({'orderid':orderid},{'_id':0})
+    if not appointment:
+        print('没有该预约')
+        return jsonify({'errmsg':"没有该预约",'errcode':-1}),400
+    else:
+        return jsonify({'errmsg':"ok",'errcode':0,'appointment_data':appointment}),200
+    
+# 获取用户全部预约信息
+@app.route('/wx_get_appointments',methods = ['POST'])
+def get_appointments():
     data = request.json
     openid = data.get('openid')
     appointments = appointment_collection.find({'openid':openid},{'_id':0})
