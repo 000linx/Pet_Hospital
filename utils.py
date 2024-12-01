@@ -1,15 +1,17 @@
 import random
 import string
+from pymongo import MongoClient
 import requests
 from flask import jsonify
+from config import User,Doctor
+# 连接到MongoDB
+client = MongoClient('localhost', 27017)
+# 选择数据库和集合
+db = client['Pet_Hospital']
+user_collection = db['user']
+doctor_collection = db['doctor']
 
-# 随机用户名
-def rand_username(length = 10):
-    characters = string.ascii_letters + string.digits
-    random_chars = random.choices(characters, k=length)
-    return ''.join(random_chars)
-
-#获取数据
+# 获取数据
 def get_data(code):
     if not code:
         return jsonify({'errmsg':"缺少登录凭证code",'errcode':-1}),400
@@ -20,25 +22,37 @@ def get_data(code):
     data = response.json()
     return data
 
-# 将Pet对象转换为字典
-def pets_to_dict(pets):
-    return {
-        'Pet_type': pets.Pet_type,
-        'name': pets.name,
-        'img': pets.img,
-        'pet_breed': pets.pet_breed,
-        'birthday': pets.birthday,
-        'sex': pets.sex,
-        'is_sterilized': pets.is_sterilized
-    }
+# 用户名生成
+def generate_rand_username():
+    characters = string.ascii_letters + string.digits
+    random_chars = random.choices(characters, k=10)
+    return 'CY_'+''.join(random_chars)
+# 订单号生成
+def generate_order_number():
+    order_number = 'CYD' + ''.join(random.choices(string.digits, k=16))
+    return order_number
+    # 根据openid查找用户
+def find_user(openid):
+    user = user_collection.find_one({'openid':openid})
+    if user:
+        user = User(user['openid'],user['username'],user['phone'],user['img'],user['pets'])
+        return user.__dict__()
+    else:
+        return None
+# 查找单个医生
+def find_doctor(docid):
+    doctor = doctor_collection.find_one({'docid':docid})
+    if doctor:
+        doctor = Doctor(doctor['docid'],doctor['name'],doctor['pet'],doctor['position'],doctor['img'],doctor['specialties'],doctor['DoctorProfile'])
+        return doctor.__dict__()
+    else:
+        return None
+# 获取全部医生
+def find_all_doctor():
+    doctors = doctor_collection.find({},{'_id':0})
+    if doctors:
+        return doctors
+    else:
+        return None
 
-# 将User对象转换为字典
-def user_to_dict(user):
-    return {
-        'openid': user.openid,
-        'username': user.username,
-        'phone': user.phone,
-        'img': user.img,
-        'pets': [pets_to_dict(pet) for pet in user.pets]
-    }
-    
+

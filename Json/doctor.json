@@ -1,0 +1,30 @@
+[
+    {
+        "docid":"3692990080",
+        "name": "张三",
+        "pet": "Dog",
+        "position":"主任医师",
+        "img":"/pages/img/医生照片.png",
+        "specialties":"专治各种疾病",
+        "DoctorProfile":"我是一个医生，我擅长治疗各种疾病。我有多年的经验，我可以帮助你解决任何问题。"
+    },
+    {
+        "docid":"5714694645",
+        "name": "李四",
+        "pet": "Dog",
+        "position":"主任医师",
+        "img":"/pages/img/医生照片.png",
+        "specialties":"专治各种疾病",
+        "DoctorProfile":"我是一个医生，我擅长治疗各种疾病。我有多年的经验，我可以帮助你解决任何问题。"
+
+    },
+    {
+        "docid":"5290940440",
+        "name": "王五",
+        "pet": "Dog",
+        "position":"主任医师",
+        "img":"/pages/img/医生照片.png",
+        "specialties":"专治各种疾病",
+        "DoctorProfile":"我是一个医生，我擅长治疗各种疾病。我有多年的经验，我可以帮助你解决任何问题。"
+    }
+]

@@ -1,0 +1,18 @@
+{
+    "openid":"",
+    "username":"",
+    "phone":"",
+    "img":"",
+    "pets":[
+        {
+            "type":"",
+            "name":"",
+            "img":"",
+            "pet_breed":"",
+            "birthday":"",
+            "sex":"",
+            "is_sterilized":""
+        }
+    ]
+
+}
