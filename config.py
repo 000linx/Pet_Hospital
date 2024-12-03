@@ -5,15 +5,6 @@ class User():
         self.phone = phone
         self.img = img
         self.pets = pets
-    # 添加用户
-    def add_user(self,collection):
-        collection.insert_one(self.__dict__())
-
-    # 添加宠物
-    def add_pet(self,pet):
-        self.pets.append(pet)
-    
-    # 转化为字典
     def __dict__(self):
         return {
             'openid': self.openid,

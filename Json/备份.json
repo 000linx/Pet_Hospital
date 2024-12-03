@@ -1,0 +1,29 @@
+{
+    "_id": {
+      "$oid": "6749c996d87e5314a843e112"
+    },
+    "openid": "ovQPt68WVx9iJv-RlA2SK7x-NOe0",
+    "username": "linx00",
+    "phone": "123456789",
+    "img": "/pages/img/用户头像.png",
+    "pets": [
+      {
+        "petType": "猫咪",
+        "petName": "mimi",
+        "petAvatar": "/pages/img/猫咪.png",
+        "variety": "狸花",
+        "date": "2024-11-29",
+        "gender": "Fmale",
+        "neutered": "NO"
+      },
+      {
+        "petType": "猫咪",
+        "petName": "TTT",
+        "petAvatar": "/pages/img/猫咪.png",
+        "variety": "asd123123",
+        "date": "2024-12-01",
+        "gender": "male",
+        "neutered": "yes"
+      }
+    ]
+  }

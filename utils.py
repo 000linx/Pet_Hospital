@@ -33,7 +33,7 @@ def generate_order_number():
     return order_number
     # 根据openid查找用户
 def find_user(openid):
-    user = user_collection.find_one({'openid':openid})
+    user = user_collection.find_one({'openid':openid},{'_id':0})
     if user:
         user = User(user['openid'],user['username'],user['phone'],user['img'],user['pets'])
         return user.__dict__()

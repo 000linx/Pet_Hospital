@@ -17,6 +17,7 @@ CORS(app)
 
 '''
 接口名
+
 /wx_login 登录
 /wx_updateuser 更新用户信息
 /wx_addpet 添加宠物
@@ -53,7 +54,8 @@ def login():
         print('没有该用户,已经自动创建')
         username = generate_rand_username()
         user = User(openid,username,'','/pages/img/用户头像.png',pets = {})
-        user.add_user(user_collection)
+        user = user.__dict__()
+        user_collection.insert_one(user)
     else :
         print('登录成功')
     return jsonify({'errmsg':'ok','errcode':0,'user_data':user}),200
@@ -73,6 +75,21 @@ def updateuser():
         user['img'] = data['img']
         user_collection.update_one({'openid':openid},{'$set':{'username':user['username'],'phone':user['phone'],'img':user['img']}})
     return jsonify({'errmsg':"更新成功",'errcode':0,'user_data':user}),200
+
+# 注销账户
+@app.route('/wx_canceluser',methods = ['POST'])
+def canceluser():
+    data = request.json
+    openid = data.get('openid')
+    print(openid)
+    user = find_user(openid)
+    if not user:
+        print('没有该用户')
+        return jsonify({'errmsg':"没有该用户",'errcode':-1}),400
+    else:
+        user_collection.delete_one({'openid':openid})
+        appointment_collection.delete_many({'openid':openid})
+    return jsonify({'errmsg':"注销成功",'errcode':0}),200
 
 '''
 宠物方法
@@ -99,7 +116,7 @@ def add_pet():
             user['pets'].append(new_pet)
     else :
         print('已添加该宠物')
-        user['pets'] = [new_pet]
+        user['pets'].append(new_pet)
     user_collection.update_one({'openid':openid},{'$set':{'pets':user['pets']}})
     return jsonify({'errmsg':"添加成功",'errcode':0,'pet_data':user['pets']}),200
 
@@ -199,7 +216,6 @@ def get_all_doctor():
 @app.route('/wx_appointment',methods = ['POST'])
 def appointment():
     data = request.json
-    print(data)
     orderid = generate_order_number()
     new_appointment = Appointment(data['openid'],data['pet'],data['date'],data['doc'],data['userName'],data['phone'],orderid).__dict__()
     print(new_appointment)
@@ -240,4 +256,4 @@ def get_appointments():
 
 
 if __name__ == '__main__':
-    app.run(host='192.168.31.55',port=5000,debug=True)
+    app.run(host='192.168.121.16',port=5000,debug=True)
